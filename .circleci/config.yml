@@ -9,4 +9,4 @@ jobs:
     resource_class: runnerpoc/test
     steps:
       - run: echo "Hi I'm on Runners!"
-      - run: make lint
+      - run: echo $(pwd)
