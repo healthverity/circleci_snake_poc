@@ -1,11 +1,23 @@
 version: 2.1
+
+executor:
+  our-node:
+    machine: true
+    resource_class: runnerpoc/test
+
+jobs:
+  runner:
+    executor: our-node
+    steps:
+      - run: echo "Hi I'm on Runners!"
+
+  runner2:
+    executor: our-node
+    steps:
+      - run: echo "I reused the executor!"
+
 workflows:
   testing:
     jobs:
       - runner
-jobs:
-  runner:
-    machine: true
-    resource_class: runnerpoc/test
-    steps:
-      - run: echo "Hi I'm on Runners!"
+      - runner2
