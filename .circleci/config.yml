@@ -82,6 +82,10 @@ workflows:
     triggers:
       - schedule:
           cron: "5 * * * *"
+          filters:
+            branches:
+              only:
+                - *
     jobs:
       - scheduled-job
 
