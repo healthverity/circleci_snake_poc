@@ -1,6 +1,6 @@
 version: 2.1
 
-executor:
+executors:
   our-node:
     machine: true
     resource_class: runnerpoc/test
