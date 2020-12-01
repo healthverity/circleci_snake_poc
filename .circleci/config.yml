@@ -63,9 +63,9 @@ workflows:
       - runner2
       - browsers
       - python-version:
-        matrix:
-          parameters:
-            version:
-              - 2.7
-              - 3.6
-              - 3.9
+          matrix:
+            parameters:
+              version:
+                - 2.7
+                - 3.6
+                - 3.9
