@@ -40,3 +40,4 @@ workflows:
     jobs:
       - runner
       - runner2
+      - browsers
