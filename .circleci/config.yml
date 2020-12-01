@@ -31,6 +31,7 @@ jobs:
     executor: our-node
     steps:
       - run: echo "I reused the executor!"
+      - run: echo "$TEST_VAR"
 
   browsers:
     executor: ubuntu-browsers
@@ -65,7 +66,9 @@ workflows:
   testing:
     jobs:
       - runner
-      - runner2
+      - runner2:
+          context:
+            - test-context
       - browsers:
           requires:
             - runner
@@ -80,16 +83,16 @@ workflows:
           requires:
             - browsers
 
-  scheduled:
-    triggers:
-      - schedule:
-          cron: "5 * * * *"
-          filters:
-            branches:
-              only:
-                - master
-                - ronen-test-config
-    jobs:
-      - scheduled-job
+  # scheduled:
+  #   triggers:
+  #     - schedule:
+  #         cron: "5 * * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #               - ronen-test-config
+  #   jobs:
+  #     - scheduled-job
 
 
