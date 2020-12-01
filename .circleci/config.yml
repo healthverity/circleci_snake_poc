@@ -85,7 +85,8 @@ workflows:
           filters:
             branches:
               only:
-                - /*/
+                - master
+                - ronen-test-config
     jobs:
       - scheduled-job
 
