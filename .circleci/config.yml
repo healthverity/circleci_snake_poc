@@ -12,6 +12,15 @@ executors:
     docker:
       - image: cimg/python:3.9-browsers
 
+  configurable-python:
+    parameters:
+      version:
+        description: "python version tag"
+        default: "3.9"
+        type: string
+    docker:
+      - image: cimg/python:<<parameters.version>>
+
 jobs:
   runner:
     executor: our-node
@@ -35,9 +44,28 @@ jobs:
           firefox --version
       - run: pip freeze
 
+  python-version:
+    parameters:
+      version:
+        description: "python version tag"
+        default: "3.9"
+        type: string
+    executor:
+      name: configurable-python
+      version: <<parameters.version>>
+    steps:
+      - run: python --version
+
 workflows:
   testing:
     jobs:
       - runner
       - runner2
       - browsers
+      - python-version:
+        matrix:
+          parameters:
+            version:
+              - 2.7
+              - 3.6
+              - 3.9
