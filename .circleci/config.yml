@@ -56,6 +56,11 @@ jobs:
     steps:
       - run: python --version
 
+  scheduled-job:
+    executor: our-node
+    steps:
+      - run: echo "It is currently $(date)"
+
 workflows:
   testing:
     jobs:
@@ -63,9 +68,21 @@ workflows:
       - runner2
       - browsers
       - python-version:
+        # My editor indented the "matrix" line 2 spaces like everything
+        # else, but the next line had to actually start two spaces from the
+        # key name, i.e. "python-version", to recognize the matrix portion
           matrix:
             parameters:
               version:
                 - "2.7"
                 - "3.6"
                 - "3.9"
+
+  scheduled:
+    triggers:
+      - schedule:
+          cron: "5 * * * *"
+    jobs:
+      - scheduled-job
+
+
