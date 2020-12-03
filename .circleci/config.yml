@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          if [[ -z << pipeline.git.tag >> ]]; then
+          if [[ -z "<< pipeline.git.tag >>" ]]; then
             export VERSION=<< pipeline.git.branch >>
           else
             export VERSION=<< pipeline.git.tag >>
