@@ -37,6 +37,7 @@ jobs:
           else
             export VERSION=<< pipeline.git.tag >>
           fi
+          echo $VERSION
           make build
 
   lint:
