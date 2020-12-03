@@ -1,11 +1,53 @@
 version: 2.1
-workflows:
-  testing:
-    jobs:
-      - runner
-jobs:
+
+executors:
   runner:
     machine: true
     resource_class: runnerpoc/test
+
+  python-docker:
+    docker:
+      image: cimg/python-3.7
+
+workflows:
+  test:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - typecheck:
+          requires:
+            - build
+      - unit-test:
+          requires:
+            - build
+      - e2e-test:
+          requires:
+            - build
+
+jobs:
+  build:
+    executor: runner
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - run: make build
+
+  lint:
+    executor: runner
+    steps:
+      - run: make lint
+
+  typecheck:
+    executor: runner
+    steps:
+      - run: make typecheck
+
+  unit-test:
+    executor: runner
+    steps:
+      - run: make run-tests
+
+  e2e-test:
+    executor: runner
+    steps:
+      - run: make run-e2e-tests
