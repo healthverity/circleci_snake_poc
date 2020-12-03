@@ -37,7 +37,7 @@ jobs:
           else
             export VERSION=<< pipeline.git.tag >>
           fi
-      - run: make build
+          make build
 
   lint:
     executor: runner
