@@ -35,6 +35,9 @@ jobs:
           command: make build
           environment:
             VERSION: "0.0.0"
+      - run: |
+          make create-venv
+          activate venv/bin/activate
       - persist_to_workspace:
           root: .
           paths:
