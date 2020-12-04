@@ -35,27 +35,35 @@ jobs:
           command: make build
           environment:
             VERSION: "0.0.0"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   lint:
     executor: runner
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run: make lint
 
   typecheck:
     executor: runner
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run: make typecheck
 
   unit-test:
     executor: runner
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run: make run-tests
 
   e2e-test:
     executor: runner
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run: make run-e2e-tests
