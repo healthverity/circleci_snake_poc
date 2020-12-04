@@ -5,10 +5,6 @@ executors:
     machine: true
     resource_class: runnerpoc/test
 
-  python-docker:
-    docker:
-      - image: cimg/python-3.7
-
 workflows:
   test:
     jobs:
@@ -25,6 +21,25 @@ workflows:
       - e2e-test:
           requires:
             - build
+      - clean:
+          requires:
+            - lint
+            - typecheck
+            - unit-test
+            - e2e-test
+
+commands:
+  run-in-docker:
+    description: 'Runs the given command in a docker container'
+    parameters:
+      COMMAND:
+        type: string
+        description: 'The command to run in Docker'
+      NAME:
+        type: string
+        description: 'The name to use when running in Docker'
+    steps:
+      - run: docker-compose run --name "<< pipeline.id >><< parameters.NAME >>" --rm cli << parameters.COMMAND >>
 
 jobs:
   build:
@@ -32,12 +47,12 @@ jobs:
     steps:
       - checkout
       - run: 
-          command: make build
+          command: make build-docker
           environment:
             VERSION: "0.0.0"
-      - run: |
-          make create-venv
-          activate venv/bin/activate
+      - run-in-docker:
+          COMMAND: 'make build'
+          NAME: 'build'
       - persist_to_workspace:
           root: .
           paths:
@@ -48,25 +63,40 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: make lint
+      - run-in-docker:
+          COMMAND: 'make lint'
+          NAME: 'lint'
 
   typecheck:
     executor: runner
     steps:
       - attach_workspace:
           at: .
-      - run: make typecheck
+      - run-in-docker:
+          COMMAND: 'make typecheck'
+          NAME: 'typecheck'
 
   unit-test:
     executor: runner
     steps:
       - attach_workspace:
           at: .
-      - run: make run-tests
+      - run-in-docker:
+          COMMAND: 'make run-tests'
+          NAME: 'unittest'
 
   e2e-test:
     executor: runner
     steps:
       - attach_workspace:
           at: .
-      - run: make run-e2e-tests
+      - run-in-docker:
+          COMMAND: 'make run-e2e-tests'
+          NAME: 'e2etest'
+
+  clean:
+    executor: runner
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make clean

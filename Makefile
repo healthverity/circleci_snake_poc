@@ -1,8 +1,10 @@
 # Snakeskin targets
 
-create-venv:
-	virtualenv --python=3.7 venv
-	venv/bin/pip3.7 install -r requirements.txt -r dev.requirements.txt
+build-docker:
+	docker-compose build --no-cache
+
+clean:
+	docker-compose down --rmi all -v --remove-orphans
 
 generate-crypto:
 	bin/crypt-generate
