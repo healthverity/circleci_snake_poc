@@ -1,7 +1,7 @@
 # Snakeskin targets
 
 build-docker:
-	docker-compose build cli --no-cache
+	docker-compose build --no-cache cli
 
 clean:
 	docker-compose down --rmi all -v --remove-orphans
