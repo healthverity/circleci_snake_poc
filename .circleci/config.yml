@@ -39,19 +39,23 @@ jobs:
   lint:
     executor: runner
     steps:
+      - checkout
       - run: make lint
 
   typecheck:
     executor: runner
     steps:
+      - checkout
       - run: make typecheck
 
   unit-test:
     executor: runner
     steps:
+      - checkout
       - run: make run-tests
 
   e2e-test:
     executor: runner
     steps:
+      - checkout
       - run: make run-e2e-tests
